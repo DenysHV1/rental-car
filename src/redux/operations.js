@@ -23,10 +23,9 @@ export const getCarsList = createAsyncThunk(
         page: query.page ? query.page : 1,
       };
 
-      const response = await axios.get(`${BASE_URL}cars/`, {params});
+      const response = await axios.get(`${BASE_URL}cars/`, { params });
 
-	  return response.data
-	  
+      return { obj: response.data, query: query.page };
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
     }

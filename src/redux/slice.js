@@ -27,11 +27,15 @@ const carsSlice = createSlice({
       .addCase(getCarsList.pending, handlePending)
       .addCase(getCarsList.rejected, handleRejected)
       .addCase(getCarsList.fulfilled, (state, { payload }) => {
-        const uniqueCars = payload.cars.filter(
-          (newCar) => !state.carsList.find((car) => car.id === newCar.id)
-        );
-
-        state.carsList = [...state.carsList, ...uniqueCars];
+        if(payload.query !== 1){
+          const uniqueCars = payload.obj.cars.filter(
+            (newCar) => !state.carsList.find((car) => car.id === newCar.id)
+          );
+  
+          state.carsList = [...state.carsList, ...uniqueCars];
+          return
+        }
+        state.carsList = payload.obj.cars;
         state.isLoading = false;
       });
   },
