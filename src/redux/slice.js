@@ -3,7 +3,8 @@ import { getCarsList } from "./operations.js";
 
 const initialState = {
   carsList: [],
-  car: null,
+  carListQuery: null,
+  totalPages: 1,
   isLoading: false,
   errorMessage: null,
 };
@@ -16,7 +17,6 @@ const handlePending = (state) => {
 const handleRejected = (state, { payload }) => {
   state.errorMessage = payload;
   state.isLoading = false;
-  state.carsList = [];
 };
 
 const carsSlice = createSlice({
@@ -27,16 +27,18 @@ const carsSlice = createSlice({
       .addCase(getCarsList.pending, handlePending)
       .addCase(getCarsList.rejected, handleRejected)
       .addCase(getCarsList.fulfilled, (state, { payload }) => {
-        if(payload.query !== 1){
-          const uniqueCars = payload.obj.cars.filter(
-            (newCar) => !state.carsList.find((car) => car.id === newCar.id)
-          );
-  
-          state.carsList = [...state.carsList, ...uniqueCars];
-          return
-        }
-        state.carsList = payload.obj.cars;
+        state.carListQuery = payload.query;
+        state.totalPages = payload.obj.totalPages;
         state.isLoading = false;
+
+        if (payload.query.page === 1) {
+          state.carsList = payload.obj.cars;
+        } else {
+          const uniqueCars = payload.obj.cars.filter(
+            (newCar) => !state.carsList.some((car) => car.id === newCar.id)
+          );
+          state.carsList = [...state.carsList, ...uniqueCars];
+        }
       });
   },
 });
