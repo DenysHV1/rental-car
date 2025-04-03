@@ -16,7 +16,6 @@ const CatalogElement = () => {
     dispatch(getCarById(id));
   }, [dispatch, id]);
 
-  console.log(car);
   const { brand, img } = car;
 
   return (
