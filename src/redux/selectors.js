@@ -5,3 +5,4 @@ export const selectError = (state) => state.cars.errorMessage;
 
 export const selectCarListQuery = (state) => state.cars.carListQuery;
 export const selectTotalPages = (state) => state.cars.totalPages;
+export const selectCar = (state) => state.cars.car;

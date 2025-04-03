@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCarsList } from "./operations.js";
+import { getCarById, getCarsList } from "./operations.js";
 
 const initialState = {
   carsList: [],
@@ -7,6 +7,7 @@ const initialState = {
   totalPages: 1,
   isLoading: false,
   errorMessage: null,
+  car: null,
 };
 
 const handlePending = (state) => {
@@ -39,6 +40,12 @@ const carsSlice = createSlice({
           );
           state.carsList = [...state.carsList, ...uniqueCars];
         }
+      })
+      .addCase(getCarById.pending, handlePending)
+      .addCase(getCarById.rejected, handleRejected)
+      .addCase(getCarById.fulfilled, (state, { payload }) => {
+        state.car = payload;
+        state.isLoading = false;
       });
   },
 });

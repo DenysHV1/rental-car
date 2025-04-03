@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import s from "./CarListItem.module.css";
+import updateAddress from "../../settings/updateAddress.js";
 
 export const CarListItem = ({ data }) => {
   const {
@@ -15,16 +16,7 @@ export const CarListItem = ({ data }) => {
     model,
   } = data;
 
-  const updateAddress = (addressInner) => {
-    const addressArr = addressInner.split(" ").slice(3, 5);
 
-    const firstElement = addressArr[0]
-      .split("")
-      .filter((item) => item !== ",")
-      .join("");
-
-    return `${firstElement}  |  ${addressArr[1]}`;
-  };
 
   return (
     <li className={s.car_item}>

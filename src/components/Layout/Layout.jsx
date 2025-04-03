@@ -23,7 +23,9 @@ const Layout = () => {
       </header>
       <main>
         <Suspense fallback={<Loader />}>
-          <Outlet />
+          <div className="container">
+            <Outlet />
+          </div>
         </Suspense>
       </main>
     </>

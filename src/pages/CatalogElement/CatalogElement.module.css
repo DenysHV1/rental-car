@@ -1,0 +1,8 @@
+.catalog_element{
+	display: flex;
+	align-items: flex-start;
+	flex-direction: column;
+	@media screen and (min-width: 768px) {
+		flex-direction: row;
+	}
+}
