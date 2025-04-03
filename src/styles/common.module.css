@@ -1,18 +1,4 @@
-.list {
-  max-width: 1200px;
-  margin: 0 auto;
-  margin-bottom: 80px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 48px 32px;
-}
-
-.item {
-  width: 276px;
-}
-
+/* Common button styles */
 .btn {
   width: 156px;
   height: 44px;
@@ -30,3 +16,24 @@
   margin: 0 auto;
   margin-bottom: 124px;
 }
+
+/* Common scrollbar styles */
+.scrollbar {
+  width: 8px;
+}
+
+.scrollbar_track {
+  background: #f7f7f7;
+  border-radius: 4px;
+  margin: 8px;
+}
+
+.scrollbar_thumb {
+  background: #dadde1;
+  border-radius: 4px;
+  margin: 8px;
+}
+
+.scrollbar_thumb:hover {
+  background: #8d929a;
+} 

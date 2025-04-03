@@ -4,6 +4,7 @@ import axios from "axios";
 const BASE_URL = "https://car-rental-api.goit.global/";
 
 const defaultQuery = {
+  brand: "",
   rentalPrice: "",
   minMileage: "",
   maxMileage: "",
@@ -16,6 +17,7 @@ export const getCarsList = createAsyncThunk(
   async (query = defaultQuery, thunkAPI) => {
     try {
       const params = {
+        brand: query.brand || "",
         rentalPrice: query.rentalPrice || "",
         minMileage: query.minMileage || "",
         maxMileage: query.maxMileage || "",

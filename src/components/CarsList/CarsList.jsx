@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectCarListQuery,
@@ -6,7 +7,6 @@ import {
   selectLoading,
   selectTotalPages,
 } from "../../redux/selectors.js";
-import { useEffect, useState } from "react";
 import { getCarsList } from "../../redux/operations.js";
 import Loader from "../Loader/Loader.jsx";
 import CarListItem from "../CarItem/CarListItem.jsx";
@@ -14,27 +14,38 @@ import s from "./CarsList.module.css";
 
 const CarsList = () => {
   const [currentPage, setCurrentPage] = useState(1);
+
   const carsList = useSelector(selectCarsList);
   const isLoading = useSelector(selectLoading);
   const errorMessage = useSelector(selectError);
   const carListQuery = useSelector(selectCarListQuery);
   const totalPages = useSelector(selectTotalPages);
+
   const dispatch = useDispatch();
+  const carsContainerRef = useRef(null);
+  const prevListLengthRef = useRef(0);
 
   useEffect(() => {
     dispatch(getCarsList());
   }, [dispatch]);
 
   const handleLoadMore = () => {
-    setCurrentPage((prev) => {
-      const nextPage = prev + 1;
-      if (nextPage <= totalPages) {
-        dispatch(getCarsList({ ...carListQuery, page: nextPage }));
-      }
-      console.log(currentPage);
-      console.log(totalPages);
+    const nextPage = currentPage + 1;
+    setCurrentPage(nextPage);
+    prevListLengthRef.current = carsList.length;
 
-      return nextPage;
+    dispatch(getCarsList({ ...carListQuery, page: nextPage })).then(() => {
+      if (carsContainerRef.current) {
+        const firstNewElement =
+          carsContainerRef.current.children[prevListLengthRef.current];
+
+        if (firstNewElement) {
+          firstNewElement.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
     });
   };
 
@@ -43,34 +54,47 @@ const CarsList = () => {
     dispatch(getCarsList({ ...carListQuery, page: 1 }));
   };
 
+  if (errorMessage) {
+    return <div>Error: {errorMessage}</div>;
+  }
+
+  const showLoadMore = carsList.length >= 12 && !isLoading && currentPage !== totalPages;
+  const showHideButton = carsList.length >= 12 && currentPage === totalPages;
+
   return (
     <section>
-      <ul className={s.list}>
-        {!isLoading ? (
-          !errorMessage ? (
+      <div className={s.container}>
+        <ul className={s.list} ref={carsContainerRef}>
+          {!isLoading ? (
             <>
               {carsList.length > 0 ? (
                 <>
                   {carsList.map((item) => (
-                    <CarListItem key={item.id} data={item} />
+                    <li key={item.id} className={s.item}>
+                      <CarListItem data={item} />
+                    </li>
                   ))}
                 </>
               ) : (
-                <li>We don't have any cars matching this request!</li>
+                <li>No cars found</li>
               )}
             </>
           ) : (
-            <li>{errorMessage}</li>
-          )
-        ) : (
-          <Loader />
+            <Loader />
+          )}
+        </ul>
+        {showLoadMore && (
+          <button
+            type="button"
+            className={s.btn}
+            onClick={handleLoadMore}
+            disabled={isLoading}
+          >
+            {isLoading ? "Loading..." : "Load more"}
+          </button>
         )}
-      </ul>
-      {currentPage < totalPages ? (
-        <button type="button" className={s.btn} onClick={handleLoadMore}>
-          Load more
-        </button>
-      ) : (
+      </div>
+      {showHideButton && (
         <button type="button" className={s.btn} onClick={handleHideCars}>
           Hide
         </button>

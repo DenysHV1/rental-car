@@ -3,6 +3,7 @@ import { getCarById, getCarsList } from "./operations.js";
 
 const initialState = {
   carsList: [],
+  favoriteCars: [],
   carListQuery: null,
   totalPages: 1,
   isLoading: false,
@@ -23,6 +24,22 @@ const handleRejected = (state, { payload }) => {
 const carsSlice = createSlice({
   name: "cars",
   initialState,
+  reducers: {
+    setFavoriteCar: (state, { payload }) => {
+      const isAlreadyFavorite = state.favoriteCars.some(car => car.id === payload);
+      
+      if (isAlreadyFavorite) {
+        // Если автомобиль уже в избранном, удаляем его
+        state.favoriteCars = state.favoriteCars.filter(car => car.id !== payload);
+      } else {
+        // Если автомобиля нет в избранном, находим его в carsList и добавляем
+        const carToAdd = state.carsList.find(car => car.id === payload);
+        if (carToAdd) {
+          state.favoriteCars.push(carToAdd);
+        }
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCarsList.pending, handlePending)
@@ -50,4 +67,5 @@ const carsSlice = createSlice({
   },
 });
 
+export const { setFavoriteCar } = carsSlice.actions;
 export default carsSlice.reducer;
