@@ -71,7 +71,7 @@ const CarElementLeftInfo = ({ img, brand }) => {
             />
             {dateShow && (
               <span onClick={handleDateShow} className={s.date_placeholder}>
-                Booking date*
+                Booking date
               </span>
             )}
           </div>
