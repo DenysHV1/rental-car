@@ -14,6 +14,7 @@ const initialState = {
 const handlePending = (state) => {
   state.isLoading = true;
   state.errorMessage = null;
+  state.car = null;
 };
 
 const handleRejected = (state, { payload }) => {

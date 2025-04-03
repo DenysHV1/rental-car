@@ -1,9 +1,9 @@
-import { Formik, Form, Field } from 'formik';
-import { brands } from '../../data/brands';
-import s from './FilterCars.module.css';
-import { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { getCarsList } from '../../redux/operations.js';
+import { Formik, Form, Field } from "formik";
+import { brands } from "../../data/brands";
+import s from "./FilterCars.module.css";
+import { useState, useRef, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { getCarsList } from "../../redux/operations.js";
 
 const FilterCars = () => {
   const [isBrandOpen, setIsBrandOpen] = useState(false);
@@ -13,25 +13,25 @@ const FilterCars = () => {
   const dispatch = useDispatch();
 
   const initialValues = {
-    brand: 'BMW',
-    rentalPrice: '10',
-    minMileage: '',
-    maxMileage: ''
+    brand: "",
+    rentalPrice: "",
+    minMileage: "",
+    maxMileage: "",
   };
 
   const handleSubmit = (values) => {
-    // const hasChanges = Object.keys(values).some(key => {
-    //   if (key === 'minMileage' || key === 'maxMileage') {
-    //     return values[key] !== '';
-    //   }
-    //   return values[key] !== initialValues[key];
-    // });
+    const hasChanges = Object.keys(values).some((key) => {
+      if (key === "minMileage" || key === "maxMileage") {
+        return values[key] !== "";
+      }
+      return values[key] !== initialValues[key];
+    });
 
-    // if (!hasChanges) {
-    //   return;
-    // }
+    if (!hasChanges) {
+      return;
+    }
 
-    dispatch(getCarsList({...values, page: 1, limit: 12}));
+    dispatch(getCarsList({ ...values, page: 1, limit: 12 }));
   };
 
   const priceOptions = [...Array(8)].map((_, i) => (i + 1) * 10);
@@ -56,16 +56,16 @@ const FilterCars = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
   return (
     <div className={s.container}>
-      <Formik 
-        initialValues={initialValues} 
+      <Formik
+        initialValues={initialValues}
         onSubmit={handleSubmit}
         enableReinitialize
       >
@@ -73,21 +73,21 @@ const FilterCars = () => {
           <Form className={s.form}>
             <div className={s.select_wrapper} ref={brandRef}>
               <p className={s.label}>Car brand</p>
-              <div 
-                className={`${s.select} ${isBrandOpen ? s.select_open : ''}`}
+              <div
+                className={`${s.select} ${isBrandOpen ? s.select_open : ""}`}
                 onClick={handleBrandClick}
               >
-                {values.brand}
+                {values.brand ? values.brand : "Choose a brand"}
               </div>
               {isBrandOpen && (
                 <ul className={s.dropdown}>
                   <div className={s.dropdown_list}>
                     {brands.map((brand) => (
-                      <li 
-                        key={brand} 
+                      <li
+                        key={brand}
                         className={s.option}
                         onClick={() => {
-                          setFieldValue('brand', brand);
+                          setFieldValue("brand", brand);
                           setIsBrandOpen(false);
                         }}
                       >
@@ -101,21 +101,23 @@ const FilterCars = () => {
 
             <div className={s.select_wrapper} ref={priceRef}>
               <p className={s.label}>Price/ 1 hour</p>
-              <div 
-                className={`${s.select} ${isPriceOpen ? s.select_open : ''}`}
+              <div
+                className={`${s.select} ${isPriceOpen ? s.select_open : ""}`}
                 onClick={handlePriceClick}
               >
-                To ${values.rentalPrice}
+                {values.rentalPrice
+                  ? `To $${values.rentalPrice}`
+                  : "Choose a price"}
               </div>
               {isPriceOpen && (
                 <ul className={s.dropdown}>
                   <div className={s.dropdown_list}>
                     {priceOptions.map((price) => (
-                      <li 
-                        key={price} 
+                      <li
+                        key={price}
                         className={s.option}
                         onClick={() => {
-                          setFieldValue('rentalPrice', price);
+                          setFieldValue("rentalPrice", price);
                           setIsPriceOpen(false);
                         }}
                       >
@@ -133,15 +135,17 @@ const FilterCars = () => {
                 <Field
                   type="number"
                   name="minMileage"
-                  placeholder="From 3,000"
-                  className={s.input}
+                  className={`${s.input} ${s.input_from}`}
+                  maxLength={5}
                 />
+                <span className={s.from}>From</span>
                 <Field
                   type="number"
                   name="maxMileage"
-                  placeholder="To 5,500"
-                  className={s.input}
+                  className={`${s.input} ${s.input_to}`}
+                  maxLength={5}
                 />
+                <span className={s.to}>To</span>
               </div>
             </div>
 
@@ -156,5 +160,3 @@ const FilterCars = () => {
 };
 
 export default FilterCars;
-
-

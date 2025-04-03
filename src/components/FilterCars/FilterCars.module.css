@@ -1,6 +1,7 @@
 .container {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .form {
@@ -83,7 +84,6 @@
   color: #101828;
 }
 
-/* Стили для скроллбара */
 .dropdown_list::-webkit-scrollbar {
   width: 8px;
 }
@@ -104,7 +104,6 @@
   background: #dadde1;
 }
 
-/* Стили для Firefox */
 .dropdown_list {
   scrollbar-width: thin;
   scrollbar-color: #dadde1 #f7f7f7;
@@ -117,8 +116,46 @@
 }
 
 .inputs_wrapper {
+  position: relative;
   display: flex;
   align-items: center;
+}
+
+.input_to,
+.input_from {
+  width: 160px;
+  height: 48px;
+  border: 1px solid rgba(18, 20, 23, 0.1);
+  border-radius: 14px;
+  padding: 14px 18px;
+  background-color: #f7f7fb;
+  color: #121417;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.11;
+  font-family: inherit;
+}
+
+.from {
+  position: absolute;
+  top: 48%;
+  left: 16px;
+  transform: translateY(-50%);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+}
+
+.to {
+  position: absolute;
+  top: 48%;
+  left: 176px;
+  transform: translateY(-50%);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
 }
 
 .input {
@@ -136,18 +173,21 @@
   outline: none;
 }
 
-.input:first-child {
+.input_from {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  border-right: 1px solid #dadde1;
+  padding-left: 58px;
 }
 
-.input:last-child {
+.input_to {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
+  padding-left: 38px;
 }
 
 .button {
-  width: 136px;
+  width: 156px;
   height: 44px;
   display: flex;
   align-items: center;
@@ -161,7 +201,6 @@
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  margin-bottom: 8px;
 }
 
 .label {
@@ -172,32 +211,10 @@
   margin-bottom: 8px;
 }
 
-/* Стили для планшета (768px - 1023px) */
-@media screen and (max-width: 1023px) {
-  .form {
-    gap: 24px;
-    justify-content: center;
-  }
-
-  .select_wrapper {
-    width: 224px;
-  }
-
-  .inputs_wrapper {
-    width: 224px;
-  }
-
-  .input {
-    width: 224px;
-  }
-}
-
-/* Стили для мобильных устройств (до 767px) */
 @media screen and (max-width: 767px) {
   .form {
     gap: 16px;
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin: 40px auto;
   }
 
   .select_wrapper {
@@ -219,8 +236,19 @@
     border-radius: 12px;
   }
 
-  .input:first-child,
-  .input:last-child {
-    border-radius: 12px;
+  .from {
+    display: none;
+  }
+
+  .to {
+    display: none;
+  }
+
+  .input_from {
+    padding-left: 16px;
+  }
+
+  .input_to {
+    padding-left: 16px;
   }
 }
