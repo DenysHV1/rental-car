@@ -93,3 +93,42 @@
   color: #fff;
   font-family: "Manrope", sans-serif;
 }
+
+.date_wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.date_placeholder {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  transform: translateY(-50%);
+  background-color: #f7f7f7;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #8d929a;
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  border-radius: 12px;
+}
+
+.date_input::-webkit-datetime-edit {
+  color: #8d929a;
+}
+
+.date_input::-webkit-datetime-edit-fields-wrapper {
+  color: #8d929a;
+}
+
+.date_input:invalid::-webkit-datetime-edit {
+  color: #8d929a;
+}
+
+.date_input:valid::-webkit-datetime-edit {
+  color: #8d929a;
+}

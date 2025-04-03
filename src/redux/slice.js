@@ -29,10 +29,8 @@ const carsSlice = createSlice({
       const isAlreadyFavorite = state.favoriteCars.some(car => car.id === payload);
       
       if (isAlreadyFavorite) {
-        // Если автомобиль уже в избранном, удаляем его
         state.favoriteCars = state.favoriteCars.filter(car => car.id !== payload);
       } else {
-        // Если автомобиля нет в избранном, находим его в carsList и добавляем
         const carToAdd = state.carsList.find(car => car.id === payload);
         if (carToAdd) {
           state.favoriteCars.push(carToAdd);
